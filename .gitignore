@@ -1,0 +1,7 @@
+.DS_Store
+ansible.cfg
+.vscode
+.editorconfig
+.manala/
+.manala.yaml
+

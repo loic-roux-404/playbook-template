@@ -1,13 +1,13 @@
 ---
 # role-users
 users:
-  - username: "deepspeech"
-    group: "deepspeech"
-    #groups: ["sudo"] # TODO : remove
+  - username: "vagrant"
+    group: "vagrant"
+    groups: ["sudo"]
     uid: 1667
     append: no
     home_mode: "0750"
-    home: "/home/deepspeech"
+    home: "/home/vagrant"
     authorized_keys:
     - "https://github.com/loic-roux-404.keys"
     ssh_key_generate: yes
@@ -26,6 +26,3 @@ users_remove:
 - news
 - gnats
 
-# role-deepspeech
-deepspeech_user: "vagrant"
-skip_assets: True

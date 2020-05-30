@@ -1,4 +1,0 @@
-server01 ansible_host=ply.ctt.test
-
-[clients]
-server01

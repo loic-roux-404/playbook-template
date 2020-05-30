@@ -4,4 +4,4 @@ ansible.cfg
 .editorconfig
 .manala/
 .manala.yaml
-
+.ext_roles

@@ -8,8 +8,8 @@ ansible:
   internal_roles: false
   inventory: inventories/
   cfg_lines:
-    - callback_plugins: plugins/callbacks
-    - callback_whitelist: auto_tags
+    callback_plugins: plugins/callbacks
+    callback_whitelist: auto_tags
 
 vagrant:
   project_name: playbook-template

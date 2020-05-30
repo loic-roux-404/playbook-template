@@ -1,6 +1,7 @@
 Playbook-template
 ============
 > Branch differ from master by the use of single inventory and group
+
 Env Playbook: 
 
 **role-basics** &rarr; Simple role to create shell / users / ssh keys from github

@@ -1,1 +1,37 @@
-# TODO use molecule
+---
+name: Molecule Test
+on: push
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 4
+      matrix:
+        python-version: [3.7]
+
+    steps:
+      - uses: actions/checkout@v1
+        with:
+          path: playbook
+      - name: Install manala
+        id: manala-install
+        run: curl -sfL https://raw.githubusercontent.com/manala/manala/master/godownloader.sh | sh
+      - name: Init from manala template
+        run: manala up
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v1
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install dependencies
+        run: |
+          sudo apt install docker
+          python -m pip install --upgrade pip
+          make install
+          ansible --version
+          molecule --version
+      - name: Test with molecule
+        run: |
+          molecule test --scenario-name debian9
+          molecule test --scenario-name debian10
+          molecule test --scenario-name ubuntu1604
+          molecule test --scenario-name ubuntu1804

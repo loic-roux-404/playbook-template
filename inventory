@@ -1,4 +1,0 @@
-server01 ansible_host=localhost ansible_port=2222 ansible_user=vagrant
-
-[clients]
-server01

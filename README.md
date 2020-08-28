@@ -1,5 +1,5 @@
 # Playbook-template
-> Branch differ from master by the use of single inventory and group
+> Branch differ from master by the use of single inventory and group_vars
 
 Env Playbook: 
 
@@ -7,7 +7,10 @@ Env Playbook:
 
 ## Init project
 
-`manala init --repository=https://github.com/loic-roux-404/manala-recipes`
+From 0 : 
+`rm -f .manala.yaml && manala init --repository=https://github.com/loic-roux-404/manala-recipes`
+
+From skelet : `manala up`
 
 ## Documentation
 
@@ -29,4 +32,4 @@ BSD
 
 ## Author Information
 
-[Loic Roux]()
+[Loic Roux](https://github.com/loic-roux-404)

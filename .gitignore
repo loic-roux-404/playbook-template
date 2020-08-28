@@ -3,4 +3,4 @@ ansible.cfg
 .vscode
 .editorconfig
 .manala/
-.ext_roles
+.ext_roles/

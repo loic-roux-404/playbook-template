@@ -14,8 +14,8 @@ jobs:
         with:
           path: playbook
       - name: Install manala
-        id: manala-install
-        run: curl -sfL https://raw.githubusercontent.com/manala/manala/master/godownloader.sh | sh
+        id: manala-install # TODO cache this action
+        run: export BINDIR=/usr/local/bin/ && scurl -sfL https://raw.githubusercontent.com/manala/manala/master/godownloader.sh | sudo sh
       - name: Init from manala template
         run: manala up
       - name: Set up Python ${{ matrix.python-version }}

@@ -1,8 +1,8 @@
 manala:
-  repository: /Users/loic/Ops/manala-recipes
+  repository: https://github.com/loic-roux-404/manala-recipes
   recipe: ops.playbook
 
-repository_save: /Users/loic/Ops/manala-recipes
+repository_save: https://github.com/loic-roux-404/manala-recipes
 gitignore: ""
 
 ansible: 

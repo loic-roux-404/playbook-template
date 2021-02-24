@@ -15,7 +15,7 @@ jobs:
           path: playbook
       - name: Install manala
         id: manala-install # TODO cache this action
-        run: export BINDIR=/usr/local/bin/ && scurl -sfL https://raw.githubusercontent.com/manala/manala/master/godownloader.sh | sudo sh
+        run: curl -sfL https://raw.githubusercontent.com/manala/manala/master/godownloader.sh | sudo BINDIR=/usr/local/bin/ sh
       - name: Init from manala template
         run: manala up
       - name: Set up Python ${{ matrix.python-version }}
@@ -35,3 +35,4 @@ jobs:
           molecule test --scenario-name debian10
           molecule test --scenario-name ubuntu1604
           molecule test --scenario-name ubuntu1804
+          molecule test --scenario-name ubuntu2004

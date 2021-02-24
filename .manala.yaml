@@ -37,7 +37,7 @@ vagrant:
     type: public 
   ansible: 
     disabled: true
-    inventory: ./inventory/dev
+    inventory: ./inventories/dev
     playbook: ""
     playbook_version: master
     sub_playbook: site.yml

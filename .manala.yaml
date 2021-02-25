@@ -1,8 +1,8 @@
 manala:
-  repository: https://github.com/loic-roux-404/manala-recipes
+  repository: http://github.com/loic-roux-404/manala-recipes.git
   recipe: ops.playbook
 
-repository_save: https://github.com/loic-roux-404/manala-recipes
+repository_save: http://github.com/loic-roux-404/manala-recipes.git
 gitignore: ""
 
 ansible: 
@@ -11,6 +11,11 @@ ansible:
       vault_password_file: ./vault_pass.sh
   internal_roles: false
   inventory: ./inventories/dev/
+  privilege_escalation:
+      become: true
+      become_ask_pass: false
+      become_method: sudo
+      become_user: root
 
 vagrant: 
   project_name: playbook-template

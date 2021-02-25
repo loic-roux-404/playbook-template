@@ -4,3 +4,7 @@ ansible.cfg
 .editorconfig
 .manala/
 .ext_roles/
+Vagrantfile
+plugins/
+.gitattributes
+.gitignore

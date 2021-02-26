@@ -3,7 +3,7 @@ dependency:
   name: galaxy
   enabled: false
   options:
-    role-file: roles/requirements.yml
+    role-file: requirements.yaml
 driver:
   name: docker
 lint: |

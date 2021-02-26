@@ -1,9 +1,7 @@
 # Playbook-template
-> Branch differ from master by the use of single inventory and group_vars
 
-Env Playbook:
-
-**role-helloworld** &rarr; Echo single phrase
+- env.yml
+    - **role-helloworld** : Echo single phrase
 
 ## Init project
 
@@ -18,13 +16,13 @@ From skelet : `manala up`
 
 ## Requirements
 
-`make install`
+[Recommanded] a python virtual env :
+- `conda create --name=(basename "$PWD") python=3.8`
+- `conda activate (basename "$PWD")`
+
+- then : `make install`
 
 See [Makefile](Makefile) for debugging and full deploy on a server
-
-## TO DO
-
-- [ ] molecule test
 
 ## License
 

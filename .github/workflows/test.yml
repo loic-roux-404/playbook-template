@@ -12,45 +12,54 @@ jobs:
     steps:
       - uses: actions/checkout@v1
 
-      - id: manala-version
+      - id: versions
         run: |
-          echo "::set-output name=v::$(manala --version || '')"
-        shell: bash
+          echo "::set-output name=manala::$(manala --version)"
+          echo "::set-output name=yq::$(yq --version)"
 
       - uses: actions/cache@v2
         with:
-          path: /usr/local/bin/manala
-          key: ${{ runner.os }}-pods-${{ steps.manala-version.outputs.v }}
+          path: |
+            /usr/local/bin/manala
+            /usr/local/bin/yq
+          key: ${{ runner.os }}-bin-${{ steps.versions.outputs.yq }}-${{ steps.versions.outputs.manala }}
           restore-keys: |
-            ${{ runner.os }}-pods-${{ steps.manala-version.outputs.v }}
+            ${{ runner.os }}-bin
       
-      - name: Install manala if needed
+      - name: Install binaries
         env:
+          YQ_URL: https://github.com/mikefarah/yq/releases/download/v4.6.1/yq_linux_amd64
           BINDIR: /usr/local/bin
-          DOWNLOADER_URL: https://raw.githubusercontent.com/manala/manala/master/godownloader.sh
-        id: manala-install
+          MANALA_DOWNLOADER_URL: https://raw.githubusercontent.com/manala/manala/master/godownloader.sh
         run: |
-          command -v manala &> /dev/null && exit 0
-          curl -sfL ${DOWNLOADER_URL} | sudo BINDIR=${BINDIR} sh
+          command -v manala &> /dev/null && : || \
+          curl -sfL ${MANALA_DOWNLOADER_URL} | sudo BINDIR=${BINDIR} sh
+          command -v yq &> /dev/null && : || \
+          sudo wget ${YQ_URL} -O ${BINDIR}/yq && sudo chmod +x ${BINDIR}/yq
       
       - name: Init from manala template
         run: manala up
+
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v1
         with:
           python-version: ${{ matrix.python-version }}
-      - name: Install dependencies # TODO cache
+
+      - uses: actions/cache@v2
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}-${{ hashFiles('*.ext_roles/role*/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
+      - name: Install python dependencies
         run: |
-          sudo apt install -y docker
           python -m pip install --upgrade pip
-          wget https://github.com/mikefarah/yq/releases/download/v4.6.1/yq_linux_amd64 -O /usr/bin/yq && chmod +x /usr/bin/yq
           make install
-          ansible --version
-          molecule --version
+
       - name: Test with molecule
         run: |
           molecule test --scenario-name debian9
           molecule test --scenario-name debian10
-          molecule test --scenario-name ubuntu1604
           molecule test --scenario-name ubuntu1804
           molecule test --scenario-name ubuntu2004

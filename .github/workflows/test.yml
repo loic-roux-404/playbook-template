@@ -11,20 +11,37 @@ jobs:
 
     steps:
       - uses: actions/checkout@v1
-      - name: Install manala
-        id: manala-install # TODO cache this action
+
+      - id: manala-version
         run: |
-          curl -sfL https://raw.githubusercontent.com/manala/manala/master/godownloader.sh \
-          | sudo BINDIR=/usr/local/bin/ sh
+          echo "::set-output name=v::$(manala --version || '')"
+        shell: bash
+
+      - uses: actions/cache@v2
+        with:
+          path: /usr/local/bin/manala
+          key: ${{ runner.os }}-pods-${{ steps.manala-version.outputs.v }}
+          restore-keys: |
+            ${{ runner.os }}-pods-${{ steps.manala-version.outputs.v }}
+      
+      - name: Install manala if needed
+        env:
+          BINDIR: /usr/local/bin
+          DOWNLOADER_URL: https://raw.githubusercontent.com/manala/manala/master/godownloader.sh
+        id: manala-install
+        run: |
+          command -v manala &> /dev/null && exit 0
+          curl -sfL ${DOWNLOADER_URL} | sudo BINDIR=${BINDIR} sh
+      
       - name: Init from manala template
         run: manala up
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v1
         with:
           python-version: ${{ matrix.python-version }}
-      - name: Install dependencies
+      - name: Install dependencies # TODO cache
         run: |
-          sudo apt install docker
+          sudo apt install -y docker
           python -m pip install --upgrade pip
           wget https://github.com/mikefarah/yq/releases/download/v4.6.1/yq_linux_amd64 -O /usr/bin/yq && chmod +x /usr/bin/yq
           make install

@@ -14,13 +14,11 @@ jobs:
 
       - id: versions
         run: |
-          echo "::set-output name=manala::$(manala --version)"
           echo "::set-output name=yq::$(yq --version)"
 
       - uses: actions/cache@v2
         with:
           path: |
-            /usr/local/bin/manala
             /usr/local/bin/yq
           key: ${{ runner.os }}-bin-${{ steps.versions.outputs.yq }}-${{ steps.versions.outputs.manala }}
           restore-keys: |
@@ -30,15 +28,9 @@ jobs:
         env:
           YQ_URL: https://github.com/mikefarah/yq/releases/download/v4.6.1/yq_linux_amd64
           BINDIR: /usr/local/bin
-          MANALA_DOWNLOADER_URL: https://raw.githubusercontent.com/manala/manala/master/godownloader.sh
         run: |
-          command -v manala &> /dev/null && : || \
-          curl -sfL ${MANALA_DOWNLOADER_URL} | sudo BINDIR=${BINDIR} sh
           command -v yq &> /dev/null && : || \
           sudo wget ${YQ_URL} -O ${BINDIR}/yq && sudo chmod +x ${BINDIR}/yq
-      
-      - name: Init from manala template
-        run: manala up
 
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v1

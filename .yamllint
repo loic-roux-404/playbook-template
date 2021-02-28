@@ -7,7 +7,7 @@ ignore: |
   .manala/
   .github/
   roles/
-  .ext_roles/
+  .ext_roles
 
 rules:
   braces:

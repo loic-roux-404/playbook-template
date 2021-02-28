@@ -3,5 +3,7 @@
   hosts: all
   tasks:
     - name: "Include role"
+      tags:
+        - molecule-idempotence-notest
       include_role:
         name: role-helloworld

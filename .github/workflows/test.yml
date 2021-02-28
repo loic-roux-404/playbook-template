@@ -12,18 +12,13 @@ jobs:
     steps:
       - uses: actions/checkout@v1
 
-      - id: versions
-        run: |
-          echo "::set-output name=yq::$(yq --version)"
-
       - uses: actions/cache@v2
         with:
-          path: |
-            /usr/local/bin/yq
-          key: ${{ runner.os }}-bin-${{ steps.versions.outputs.yq }}-${{ steps.versions.outputs.manala }}
+          path: /usr/local/bin/yq
+          key: ${{ runner.os }}-bin-yq
           restore-keys: |
-            ${{ runner.os }}-bin
-      
+            ${{ runner.os }}-bin-
+
       - name: Install binaries
         env:
           YQ_URL: https://github.com/mikefarah/yq/releases/download/v4.6.1/yq_linux_amd64
@@ -50,6 +45,8 @@ jobs:
           make install
 
       - name: Test with molecule
+        env:
+          ANSIBLE_CONFIG: $PWD/ansible.cfg
         run: |
           molecule test --scenario-name debian9
           molecule test --scenario-name debian10

@@ -1,0 +1,9 @@
+# Python requirements for executing
+# tests cases
+ansible~=2.10.7
+ansible-lint~=5.0.2
+docker
+flake8
+molecule~=3.2.0
+testinfra
+molecule[docker]

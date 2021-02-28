@@ -1,0 +1,6 @@
+server01 ansible_host=domain.tld
+
+[env]
+server01
+
+

@@ -1,1 +1,54 @@
-# TODO use molecule
+---
+name: Molecule Test
+on: push
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 4
+      matrix:
+        python-version: [3.7]
+
+    steps:
+      - uses: actions/checkout@v1
+
+      - uses: actions/cache@v2
+        with:
+          path: /usr/local/bin/yq
+          key: ${{ runner.os }}-bin-yq
+          restore-keys: |
+            ${{ runner.os }}-bin-
+
+      - name: Install binaries
+        env:
+          YQ_URL: https://github.com/mikefarah/yq/releases/download/v4.6.1/yq_linux_amd64
+          BINDIR: /usr/local/bin
+        run: |
+          command -v yq &> /dev/null && : || \
+          sudo wget ${YQ_URL} -O ${BINDIR}/yq && sudo chmod +x ${BINDIR}/yq
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v1
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - uses: actions/cache@v2
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}-${{ hashFiles('*.ext_roles/role*/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
+      - name: Install python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          make install
+
+      - name: Test with molecule
+        env:
+          ANSIBLE_CONFIG: $PWD/ansible.cfg
+        run: |
+          molecule test --scenario-name debian9
+          molecule test --scenario-name debian10
+          molecule test --scenario-name ubuntu1804
+          molecule test --scenario-name ubuntu2004

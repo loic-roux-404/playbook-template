@@ -1,4 +1,9 @@
 ---
-# Github roles
-- src: chusiang.helloworld
-  name: role-helloworld
+roles:
+  # Github roles
+  - src: chusiang.helloworld
+    name: role-helloworld
+
+collections:
+  # - community.docker
+

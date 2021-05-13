@@ -1,9 +1,9 @@
 manala:
-  repository: http://github.com/loic-roux-404/manala-recipes.git
+  repository: "https://github.com/loic-roux-404/manala-recipes.git" 
   recipe: ops.playbook
 
+
 gitignore: ""
-semantic_release: {}
 
 ansible: 
   auto_tag: false
